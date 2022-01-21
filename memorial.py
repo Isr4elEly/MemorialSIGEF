@@ -46,17 +46,18 @@ conf0 = df.loc[0,'conf']
 az0 = df.loc[0,'az']
 dist0 = df.loc[0,'dist']
 
-cabecalho = f''' MEMORIAL DESCRITIVO
-
-Imóvel: {imovel}							Comarca: {CNS}
-Proprietário: {nome} C.P.F. nº {cpf}
-Município/UF: {'Urandi-BA'}
-Código INCRA: {ccir}					Matrícula: {matricula}
-Área (ha): {area}					Perímetro: {perimetro}'''
-
-inicio = f'''Inicia-se a descrição deste perímetro no vértice {p0}, 
-com Latitude {lat0} N e Longitude {long0} S, '''
-
+with open('./latex/cabecalho.tex', 'w') as f:
+    cabalho = f'''
+\begin{center}
+\LARGE {MEMORIAL DESCRITIVO}
+\end{center}
+\begin{tabular}{ll}
+\emph{Imóvel: {imovel}} & \emph{Comarca: São Sebastião do Passé} \\
+\multicolumn{2}{l}{\emph{Proprietário: Reinaldo Souza Gayoso Sá Barreto}}\\
+\emph{UF: Ba }& \emph{Município: São Sebastião do Passé }\\
+\emph{Código INCRA: 951.137.639.770-7}\hspace{3cm}	 & \emph{Matrícula: 306 }\\
+\emph{Área Gleba 1 ($ha$): 5,0074} & \emph{Perímetro Gleba 1 ($m$): 1.064,68}\\	
+\end{tabular}'''
 # variáveis temporárias
 pn = 0
 pn1 = 0
@@ -71,7 +72,7 @@ dist_n = 0
 
 
 
-with open('./memorial.tex', 'a', encoding='utf-8' ) as f:
+with open('./latex/memorial.tex', 'a', encoding='utf-8' ) as f:
     f.write(inicio)
     for i in df.itertuples():
         f.write(f'''deste, segue confrontando com {i.conf}, com azimute geodésico de {i.az} e distância de 
