@@ -37,46 +37,47 @@ art = '327453 - BA'
 src = 'SIRGAS 2000'
 mc ='-39°'
 
-# Ponto de partida
 
-p0 = df.loc[0,'codigo']
-lat0= df.loc[0,'lat']
-long0 = df.loc[0,'long']
-conf0 = df.loc[0,'conf']
-az0 = df.loc[0,'az']
-dist0 = df.loc[0,'dist']
-
-with open('./latex/cabecalho.tex', 'w') as f:
-    cabalho = f'''
-\begin{center}
+with open('./latex/cabecalho.tex', 'w', encoding='utf-8') as f:
+    f.write('''
+\\begin{center}
 \LARGE {MEMORIAL DESCRITIVO}
 \end{center}
-\begin{tabular}{ll}
-\emph{Imóvel: {imovel}} & \emph{Comarca: São Sebastião do Passé} \\
-\multicolumn{2}{l}{\emph{Proprietário: Reinaldo Souza Gayoso Sá Barreto}}\\
-\emph{UF: Ba }& \emph{Município: São Sebastião do Passé }\\
-\emph{Código INCRA: 951.137.639.770-7}\hspace{3cm}	 & \emph{Matrícula: 306 }\\
-\emph{Área Gleba 1 ($ha$): 5,0074} & \emph{Perímetro Gleba 1 ($m$): 1.064,68}\\	
-\end{tabular}'''
-# variáveis temporárias
-pn = 0
-pn1 = 0
-lat_n = 0
-long_n = 0
-conf_n = 0
-azim = 0
-dist_n = 0
+\\begin{tabular}{ll}
+\emph{Imóvel: fazenda} & \emph{Comarca: São Sebastião do Passé} \\\
+\multicolumn{2}{l}\emph{Proprietário: Reinaldo Souza Gayoso Sá Barreto}\\\
+\emph{UF: Ba }& \emph{Município: São Sebastião do Passé }\\\
+\emph{Código INCRA: 951.137.639.770-7}\hspace{3cm}	 & \emph{Matrícula: 306 }\\\
+\emph{Área Gleba 1 ($ha$): 5,0074} & \emph{Perímetro Gleba 1 ($m$): 1.064,68}\\\
+\end{tabular}''')
 
 
-# Acessando as informações do memorial
-
-
-
+# Montando o memorial descritivo
 with open('./latex/memorial.tex', 'a', encoding='utf-8' ) as f:
-    f.write(inicio)
+    
     for i in df.itertuples():
-        f.write(f'''deste, segue confrontando com {i.conf}, com azimute geodésico de {i.az} e distância de 
-{str(i.dist/100).replace('.',',')}m até o vértice {i.vert_fim} de Latitude {i.lat} N e Logitude {i.long} S;\n''')
-    f.write(f''' encerrando esta descrição. Todas as coordenadas aqui descritas estão georrefereciadas ao Sistema 
-Geodésico Brasileiro, e encontram-se representadas no sistema {src}, referenciadas ao Meridiano Central {mc}.
- Todos os azimutes e distâncias, área e perímetro foram calculados no Sistema Geodésico Local.''')
+        if i.Index==0:
+            f.write(f'''Inicia-se a descrição deste perímetro no vértice {i.codigo}, com Latitude {i.lat} N e Longitude {i.long} S; deste, segue confrontando com {str(i.conf).upper()}, com azimute geodésico de {i.az} e distância de {str(i.dist/100).replace('.',',')}m''')
+        else:
+            f.write(f''' até o vértice {i.codigo}, com Latitude {i.lat} N e Longitude {i.long} S; deste, segue confrontando com {i.conf}, com azimute geodésico de {i.az} e distância de 
+{str(i.dist/100).replace('.',',')}m ''')
+    f.write(f''' até o vértice {df.loc[0,'codigo']} encerrando esta descrição. Todas as coordenadas aqui descritas estão georrefereciadas ao Sistema Geodésico Brasileiro, e encontram-se representadas no sistema {src}, referenciadas ao Meridiano Central {mc}. Todos os azimutes e distâncias, área e perímetro foram calculados no Sistema Geodésico Local.''')
+
+with open('./latex/main.tex', 'w', encoding='utf-8') as f:
+    f.write(f'''\documentclass[10.8pt, a4paper]{{article}}
+\input{{config}}%pacotes e configurações
+
+\\begin{{document}}
+\input{{cabecalho}}
+\\vspace{{1cm}}
+   % corpo do memorial
+
+\include{{memorial.tex}}
+
+\\vspace{{1cm}}
+\\begin{{flushright}}
+   \emph{{São Sebastião do Passé, 17 de outubro de 2021}}
+\end{{flushright}}
+\\vspace{{0.5cm}}
+\input{{assinatura}}
+\end{{document}}     ''')
