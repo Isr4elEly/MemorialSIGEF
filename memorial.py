@@ -22,7 +22,7 @@ imovel = 'FAZENDA BARRO VERMELHO'
 ccir = '000.019.168.386-2'
 matricula = '3211'
 CNS = '(01.017-3) Urandi - BA'
-Municipio = 'Urandi-BA'
+municipio = 'Urandi'
 perimetro = '5.086,36 m'
 area = '76,8515 ha'
 
@@ -39,20 +39,21 @@ mc ='-39°'
 
 
 with open('./latex/cabecalho.tex', 'w', encoding='utf-8') as f:
-    f.write('''
-\\begin{center}
-\LARGE {MEMORIAL DESCRITIVO}
-\end{center}
-\\begin{tabular}{ll}
-\emph{Imóvel: fazenda} & \emph{Comarca: São Sebastião do Passé} \\\
-\multicolumn{2}{l}\emph{Proprietário: Reinaldo Souza Gayoso Sá Barreto}\\\
-\emph{UF: Ba }& \emph{Município: São Sebastião do Passé }\\\
-\emph{Código INCRA: 951.137.639.770-7}\hspace{3cm}	 & \emph{Matrícula: 306 }\\\
-\emph{Área Gleba 1 ($ha$): 5,0074} & \emph{Perímetro Gleba 1 ($m$): 1.064,68}\\\
-\end{tabular}''')
+    f.write(f'''
+\\begin{{center}}
+\LARGE {{MEMORIAL DESCRITIVO}}
+\end{{center}}
+\\begin{{tabular}}{{ll}}
+\emph{{Imóvel: {imovel}}} & \emph{{Comarca: {CNS}}} \\\ 
+\\emph{{Proprietário: {nome}}}&\\\ 
+\emph{{UF: Ba}}& \emph{{Município: {municipio}}}\\\ 
+\emph{{Código INCRA: {ccir}}}\hspace{{3cm}}	 & \emph{{Matrícula: {matricula}}}\\\ 
+\emph{{Área ($ha$): {area}}} & \emph{{Perímetro ($m$): {perimetro}}}\\\ 
+\end{{tabular}}''')
 
 
 # Montando o memorial descritivo
+
 with open('./latex/memorial.tex', 'a', encoding='utf-8' ) as f:
     
     for i in df.itertuples():
@@ -64,20 +65,20 @@ with open('./latex/memorial.tex', 'a', encoding='utf-8' ) as f:
     f.write(f''' até o vértice {df.loc[0,'codigo']} encerrando esta descrição. Todas as coordenadas aqui descritas estão georrefereciadas ao Sistema Geodésico Brasileiro, e encontram-se representadas no sistema {src}, referenciadas ao Meridiano Central {mc}. Todos os azimutes e distâncias, área e perímetro foram calculados no Sistema Geodésico Local.''')
 
 with open('./latex/main.tex', 'w', encoding='utf-8') as f:
-    f.write(f'''\documentclass[10.8pt, a4paper]{{article}}
-\input{{config}}%pacotes e configurações
+    f.write('''\documentclass[10.8pt, a4paper]{article}
+\input{config}%pacotes e configurações
 
-\\begin{{document}}
-\input{{cabecalho}}
-\\vspace{{1cm}}
+\\begin{document}
+\input{cabecalho}
+\\vspace{1cm}
    % corpo do memorial
 
-\include{{memorial.tex}}
+\input{memorial.tex}
 
-\\vspace{{1cm}}
-\\begin{{flushright}}
-   \emph{{São Sebastião do Passé, 17 de outubro de 2021}}
-\end{{flushright}}
-\\vspace{{0.5cm}}
-\input{{assinatura}}
-\end{{document}}     ''')
+\\vspace{1cm}
+\\begin{flushright}
+   \emph{Urandi-BA, xx de xxxx de 20xx}
+\end{flushright}
+\\vspace{0.5cm}
+\input{assinatura}
+\end{document}     ''')

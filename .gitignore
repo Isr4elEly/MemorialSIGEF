@@ -1,0 +1,8 @@
+*.pdf
+*.ipynb
+analitico.md
+analitico.txt
+tabela.csv
+*.log
+*.gz
+latex/main.synctex.gz
